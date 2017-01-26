@@ -3,7 +3,6 @@ package ga
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -43,6 +42,29 @@ var _ = Describe("Request", func() {
 		})
 	})
 
+	It("GA request", func() {
+
+		req := New(os.Getenv("ACCESS"))
+
+		req.ViewID("112236938")
+		req.DateRange("2017-01-01", "2017-01-02")
+
+		req.Dimension("ga:deviceCategory")
+		req.Dimension("ga:campaign")
+		req.Dimension("ga:adGroup")
+
+		req.Metric("ga:users", "", "")
+		req.Metric("ga:sessions", "", "")
+
+		res, err := req.Do()
+		Expect(err).To(Succeed())
+
+		var csv bytes.Buffer
+
+		Expect(res.CSV(&csv)).To(Succeed())
+		strings.Contains(csv.String(), "1259490_LBX_160505_10moneybackbonus_core")
+	})
+
 	It("Response", func() {
 
 		reader, err := os.Open("fixtures/response.json")
@@ -70,7 +92,7 @@ var _ = Describe("Request", func() {
 
 		Expect(r.CSV(&csv)).To(Succeed())
 
-		fmt.Println(csv.String())
+		strings.Contains(csv.String(), "1259490_LBX_160505_10moneybackbonus_core")
 
 	})
 })

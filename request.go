@@ -3,6 +3,7 @@ package ga
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"net/http"
 )
 
@@ -91,8 +92,20 @@ func (h *HelperRequest) Do() (res *HelperResponse, err error) {
 		return
 	}
 
+	if resHTTP.StatusCode != 200 {
+		err = errors.New(resHTTP.Status)
+		return
+	}
+
 	defer resHTTP.Body.Close()
-	err = json.NewDecoder(resHTTP.Body).Decode(res)
+
+	tmpHelpResp := HelperResponse{}
+
+	if err = json.NewDecoder(resHTTP.Body).Decode(&tmpHelpResp); err != nil {
+		return
+	}
+
+	res = &tmpHelpResp
 
 	return
 }
