@@ -1,0 +1,22 @@
+{
+    "reportRequests": [{
+        "viewId": "112236938",
+        "dateRanges": [{
+            "startDate": "2017-01-01",
+            "endDate": "2017-01-02"
+        }],
+        "dimensions": [{
+            "name": "ga:deviceCategory"
+        }, {
+            "name": "ga:campaign"
+        }, {
+            "name": "ga:adGroup"
+        }],
+        "metrics": [{
+            "expression": "ga:users"
+        }, {
+            "expression": "ga:sessions"
+        }],
+        "pageSize": 10000
+    }]
+}
