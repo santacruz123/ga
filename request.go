@@ -10,14 +10,14 @@ import (
 //HelperRequest struct
 type HelperRequest struct {
 	accessCode string
-	Request    Request
+	request    request
 }
 
-//New request constructor
+//New constructor
 func New(accessCode string) *HelperRequest {
 	return &HelperRequest{
 		accessCode: accessCode,
-		Request: Request{
+		request: request{
 			PageSize: 10000,
 		},
 	}
@@ -25,18 +25,18 @@ func New(accessCode string) *HelperRequest {
 
 //Dimension add
 func (h *HelperRequest) Dimension(dim string) {
-	h.Request.Dimensions = append(
-		h.Request.Dimensions,
-		Dimension{
+	h.request.Dimensions = append(
+		h.request.Dimensions,
+		dimension{
 			Name: dim,
 		},
 	)
 }
 
 //Metric add
-func (h *HelperRequest) Metric(expr, alias string, style MetricType) {
+func (h *HelperRequest) Metric(expr, alias, style string) {
 
-	m := Metric{}
+	m := metric{}
 	m.Expression = expr
 
 	if alias != "" {
@@ -44,27 +44,27 @@ func (h *HelperRequest) Metric(expr, alias string, style MetricType) {
 	}
 
 	if style != "" {
-		m.FormattingType = style
+		m.FormattingType = metricType(style)
 	}
 
-	h.Request.Metrics = append(h.Request.Metrics, m)
+	h.request.Metrics = append(h.request.Metrics, m)
 }
 
 //PageSize set
 func (h *HelperRequest) PageSize(size int64) {
-	h.Request.PageSize = size
+	h.request.PageSize = size
 }
 
 //ViewID set
 func (h *HelperRequest) ViewID(viewID string) {
-	h.Request.ViewID = viewID
+	h.request.ViewID = viewID
 }
 
 //DateRange add
 func (h *HelperRequest) DateRange(start, end string) {
-	h.Request.DateRange = append(
-		h.Request.DateRange,
-		DateRange{
+	h.request.DateRange = append(
+		h.request.DateRange,
+		dateRange{
 			StartDate: start,
 			EndDate:   end,
 		},
@@ -112,9 +112,9 @@ func (h *HelperRequest) Do() (res *HelperResponse, err error) {
 
 func (h *HelperRequest) marshal() ([]byte, error) {
 	tmpStruc := struct {
-		ReportRequests []Request `json:"reportRequests"`
+		ReportRequests []request `json:"reportRequests"`
 	}{
-		ReportRequests: []Request{h.Request},
+		ReportRequests: []request{h.request},
 	}
 
 	return json.Marshal(&tmpStruc)

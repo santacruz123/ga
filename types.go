@@ -4,50 +4,43 @@ import "os"
 
 var access = os.Getenv("ACCESS")
 
-//MetricType type
-type MetricType string
+type metricType string
 
-//MetricType conststants
 const (
-	MetricTypeUnspecified MetricType = "METRIC_TYPE_UNSPECIFIED"
-	MetricTypeInteger     MetricType = "INTEGER"
-	MetricTypeFloat       MetricType = "FLOAT"
-	MetricTypeCurrency    MetricType = "CURRENCY"
-	MetricTypePercent     MetricType = "PERCENT"
-	MetricTypeTime        MetricType = "TIME"
+	metricTypeUnspecified metricType = "METRIC_TYPE_UNSPECIFIED"
+	metricTypeInteger     metricType = "INTEGER"
+	metricTypeFloat       metricType = "FLOAT"
+	metricTypeCurrency    metricType = "CURRENCY"
+	metricTypePercent     metricType = "PERCENT"
+	metricTypeTime        metricType = "TIME"
 )
 
-//DateRange struct
-type DateRange struct {
+type dateRange struct {
 	StartDate string `json:"startDate"`
 	EndDate   string `json:"endDate"`
 }
 
-//Dimension struct
-type Dimension struct {
+type dimension struct {
 	Name             string   `json:"name"`
 	HistogramBuckets []string `json:"histogramBuckets,omitempty"`
 }
 
-//Metric struct
-type Metric struct {
+type metric struct {
 	Expression     string     `json:"expression"`
 	Alias          string     `json:"alias,omitempty"`
-	FormattingType MetricType `json:"formattingType,omitempty"`
+	FormattingType metricType `json:"formattingType,omitempty"`
 }
 
-//Request struc
-type Request struct {
+type request struct {
 	ViewID     string      `json:"viewId"`
-	DateRange  []DateRange `json:"dateRanges"`
-	Dimensions []Dimension `json:"dimensions,omitempty"`
-	Metrics    []Metric    `json:"metrics,omitempty"`
+	DateRange  []dateRange `json:"dateRanges"`
+	Dimensions []dimension `json:"dimensions,omitempty"`
+	Metrics    []metric    `json:"metrics,omitempty"`
 	PageToken  string      `json:"pageToken,omitempty"`
 	PageSize   int64       `json:"pageSize,omitempty"`
 }
 
-//Response type
-type Response struct {
+type response struct {
 	ColumnHeader struct {
 		Dimensions   []string `json:"dimensions"`
 		MetricHeader struct {

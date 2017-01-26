@@ -7,7 +7,7 @@ import (
 
 //HelperResponse struct
 type HelperResponse struct {
-	Reports []Response `json:"reports"`
+	Reports []response `json:"reports"`
 }
 
 func (h *HelperResponse) headers() (headers []string) {
