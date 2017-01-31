@@ -5,12 +5,12 @@ import (
 	"io"
 )
 
-//HelperResponse struct
-type HelperResponse struct {
+//Response struct
+type Response struct {
 	Reports []response `json:"reports"`
 }
 
-func (h *HelperResponse) headers() (headers []string) {
+func (h *Response) headers() (headers []string) {
 	for _, dim := range h.Reports[0].ColumnHeader.Dimensions {
 		headers = append(headers, dim)
 	}
@@ -22,7 +22,7 @@ func (h *HelperResponse) headers() (headers []string) {
 	return
 }
 
-func (h *HelperResponse) process() (res []map[string]interface{}) {
+func (h *Response) process() (res []map[string]interface{}) {
 
 	for _, dataRow := range h.Reports[0].Data.Rows {
 		row := make(map[string]interface{})
@@ -42,12 +42,12 @@ func (h *HelperResponse) process() (res []map[string]interface{}) {
 }
 
 //Export structure
-func (h *HelperResponse) Export() []map[string]interface{} {
+func (h *Response) Export() []map[string]interface{} {
 	return h.process()
 }
 
 //CSV export
-func (h *HelperResponse) CSV(out io.Writer) error {
+func (h *Response) CSV(out io.Writer) error {
 	data := h.process()
 
 	w := csv.NewWriter(out)

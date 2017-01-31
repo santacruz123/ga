@@ -70,7 +70,7 @@ var _ = Describe("Request", func() {
 		reader, err := os.Open("fixtures/response.json")
 		Expect(err).To(Succeed())
 
-		r := &HelperResponse{}
+		r := &Response{}
 
 		json.NewDecoder(reader).Decode(r)
 
@@ -85,7 +85,7 @@ var _ = Describe("Request", func() {
 		reader, err := os.Open("fixtures/response.json")
 		Expect(err).To(Succeed())
 
-		r := &HelperResponse{}
+		r := &Response{}
 		json.NewDecoder(reader).Decode(r)
 
 		var csv bytes.Buffer

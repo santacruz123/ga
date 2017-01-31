@@ -7,15 +7,15 @@ import (
 	"net/http"
 )
 
-//HelperRequest struct
-type HelperRequest struct {
+//Request struct
+type Request struct {
 	accessCode string
 	request    request
 }
 
 //New constructor
-func New(accessCode string) *HelperRequest {
-	return &HelperRequest{
+func New(accessCode string) *Request {
+	return &Request{
 		accessCode: accessCode,
 		request: request{
 			PageSize: 10000,
@@ -24,7 +24,7 @@ func New(accessCode string) *HelperRequest {
 }
 
 //Dimension add
-func (h *HelperRequest) Dimension(dim string) {
+func (h *Request) Dimension(dim string) {
 	h.request.Dimensions = append(
 		h.request.Dimensions,
 		dimension{
@@ -34,7 +34,7 @@ func (h *HelperRequest) Dimension(dim string) {
 }
 
 //Metric add
-func (h *HelperRequest) Metric(expr, alias, style string) {
+func (h *Request) Metric(expr, alias, style string) {
 
 	m := metric{}
 	m.Expression = expr
@@ -50,18 +50,18 @@ func (h *HelperRequest) Metric(expr, alias, style string) {
 	h.request.Metrics = append(h.request.Metrics, m)
 }
 
-//PageSize set
-func (h *HelperRequest) PageSize(size int64) {
+//PageSize setter
+func (h *Request) PageSize(size int64) {
 	h.request.PageSize = size
 }
 
-//ViewID set
-func (h *HelperRequest) ViewID(viewID string) {
+//ViewID setter
+func (h *Request) ViewID(viewID string) {
 	h.request.ViewID = viewID
 }
 
 //DateRange add
-func (h *HelperRequest) DateRange(start, end string) {
+func (h *Request) DateRange(start, end string) {
 	h.request.DateRange = append(
 		h.request.DateRange,
 		dateRange{
@@ -72,7 +72,7 @@ func (h *HelperRequest) DateRange(start, end string) {
 }
 
 //Do request
-func (h *HelperRequest) Do() (res *HelperResponse, err error) {
+func (h *Request) Do() (res *Response, err error) {
 
 	payload, err := h.marshal()
 	if err != nil {
@@ -99,7 +99,7 @@ func (h *HelperRequest) Do() (res *HelperResponse, err error) {
 
 	defer resHTTP.Body.Close()
 
-	tmpHelpResp := HelperResponse{}
+	tmpHelpResp := Response{}
 
 	if err = json.NewDecoder(resHTTP.Body).Decode(&tmpHelpResp); err != nil {
 		return
@@ -110,7 +110,7 @@ func (h *HelperRequest) Do() (res *HelperResponse, err error) {
 	return
 }
 
-func (h *HelperRequest) marshal() ([]byte, error) {
+func (h *Request) marshal() ([]byte, error) {
 	tmpStruc := struct {
 		ReportRequests []request `json:"reportRequests"`
 	}{

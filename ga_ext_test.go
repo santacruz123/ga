@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	. "bitbucket.org/ladbrokes/ga_export"
+	"github.com/santacruz123/ga"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -14,7 +14,7 @@ import (
 var _ = Describe("External", func() {
 	Context("External", func() {
 		It("GA", func() {
-			req := New(os.Getenv("ACCESS"))
+			req := ga.New(os.Getenv("ACCESS"))
 
 			req.ViewID("112236938")
 			req.DateRange("2017-01-01", "2017-01-02")
